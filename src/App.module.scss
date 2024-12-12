@@ -1,0 +1,75 @@
+$image-path: '/public/images/';
+
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; // 禁用滚动条
+}
+
+body {
+  background-image: url('#{$image-path}mobile2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @media(min-width: 768px){
+    background-image: url('#{$image-path}pc1.jpg');
+  }
+
+}
+
+.container {
+  display: flex; // 使用flex布局
+  height: 100vh; // 确保容器高度为视口高度
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+
+  .content {
+    min-height: calc(100vh - 20px);
+    flex-grow: 1; // 让内容区域自动填充剩余空间
+
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 100px;
+      }
+    }
+  }
+
+  .footer {
+    height: 20px; // 设置高度
+    text-align: center;
+    a {
+      color: #000000;
+      text-decoration: none; // 去除下划线
+    }
+
+
+    @media (max-width: 768px) {
+      a, img {
+        display: none;
+      }
+    }
+  }
+}
+
+.gradient {
+  // 定义渐变背景
+  $gradient: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+  // 设置文本颜色为透明，以便显示背景渐变
+  color: transparent;
+  // 将背景渐变应用到文本
+  background-image: $gradient;
+  // 使用 -webkit-background-clip 属性将背景剪裁到文本
+  -webkit-background-clip: text;
+  // 兼容性：为不支持 -webkit-background-clip 的浏览器设置一个回退颜色
+  // 这里我们使用渐变的起始颜色作为回退颜色
+  background-color: #94c8ec;
+  // 添加白色描边
+  -webkit-text-stroke: 0.6px #df2929;
+}

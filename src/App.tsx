@@ -36,12 +36,20 @@ function App() {
             <div className={styles.footer}>
                 &copy;{new Date().getFullYear()} Created by 简心运维
                 &nbsp;&nbsp;
-                <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2023042170号-1</a>
+{/*                 <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2023042170号-1</a>
                 &nbsp;&nbsp;
                 <img src='https://img.alicdn.com/tfs/TB1..50QpXXXXX7XpXXXXXXXXXX-40-40.png'
                      style={{width: '17px', height: 'auto'}} alt=""/>
                 <a href="https://beian.mps.gov.cn/#/query/webSearch?code=37092102000264" rel="noreferrer"
-                   target="_blank">鲁公网安备37092102000264</a>
+                   target="_blank">鲁公网安备37092102000264</a> */}
+                <div style={{fontSize: '14px'}}>
+                    <a href="https://beian.miit.gov.cn/" target="_blank"
+                       style={{color: '#bbbbbb'}}>鲁ICP备2023042170号-1</a>
+                    <div>
+                        <a href="https://beian.mps.gov.cn/#/query/webSearch?code=37092102000264" rel="noreferrer"
+                           target="_blank" style={{color: '#bbbbbb'}}>鲁公网安备37092102000264</a>
+                    </div>
+                </div>
             </div>
         </div>
     )

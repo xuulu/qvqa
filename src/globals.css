@@ -1,0 +1,29 @@
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    overflow-x: hidden; /* 禁止水平滚动 */
+
+    text-shadow: 0.05rem .1rem rgb(215, 60, 227);
+    box-shadow: inset 0 0 5rem rgb(218, 237, 246);
+}
+
+

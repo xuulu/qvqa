@@ -1,56 +1,85 @@
 import React, {useEffect} from 'react';
 import config from '../config';
 
-
-
-
 const BackgroundSlider: React.FC = () => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const mobileImages = config.images.mobile;
+    const pcImages = config.images.pc;
 
-    useEffect(() => {
-        // 设置 body 样式
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        document.body.style.minHeight = '100vh';
-        document.body.style.overflowX = 'hidden';
-        document.body.style.textShadow = '0.05rem 0.1rem rgb(215, 60, 227)';
-        document.body.style.boxShadow = 'inset 0 0 5rem rgb(218, 237, 246)';
-        document.body.style.transition = 'background-image 1s ease-in-out'; // 过渡效果
+    // 视频背景组件
+    const VideoBackground = () => {
+        return (
+            <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    objectFit: 'cover',
+                    // objectFit: 'contain',
+                    zIndex: -1,
+                    pointerEvents: 'none'
+                }}
+            >
+                <source
+                    src={isMobile ? "/videos/mobile/丝柯克.mp4" : "/videos/pc/丝柯克.mp4"}
+                    type="video/mp4"
+                />
+            </video>
+        );
+    };
+
+    // 图片背景逻辑组件
+    // const ImageBackground = () => {
+    //     useEffect(() => {
+    //         // 图片预加载
+    //         const preloadImages = (sources: string[]) => {
+    //             sources.forEach(src => {
+    //                 const img = new Image();
+    //                 img.src = src;
+    //                 img.onload = () => console.log(`Preloaded image: ${src}`);
+    //                 img.onerror = e => console.error(`Failed to load image: ${src}`, e);
+    //             });
+    //         };
+    //
+    //         const imagePath = isMobile
+    //             ? mobileImages[Math.floor(Math.random() * mobileImages.length)]
+    //             : pcImages[Math.floor(Math.random() * pcImages.length)];
+    //
+    //         document.body.style.backgroundSize = 'cover';
+    //         document.body.style.backgroundPosition = 'center';
+    //         document.body.style.backgroundRepeat = 'no-repeat';
+    //         document.body.style.minHeight = '100vh';
+    //         document.body.style.overflowX = 'hidden';
+    //         document.body.style.textShadow = '0.05rem 0.1rem rgb(215, 60, 227)';
+    //         document.body.style.boxShadow = 'inset 0 0 5rem rgb(218, 237, 246)';
+    //         document.body.style.transition = 'background-image 1s ease-in-out';
+    //         document.body.style.backgroundImage = `url(${imagePath})`;
+    //
+    //         preloadImages(isMobile ? mobileImages : pcImages);
+    //
+    //         const timerId = setInterval(() => {
+    //             const newPath = isMobile
+    //                 ? mobileImages[Math.floor(Math.random() * mobileImages.length)]
+    //                 : pcImages[Math.floor(Math.random() * pcImages.length)];
+    //             document.body.style.backgroundImage = `url(${newPath})`;
+    //         }, 3000);
+    //
+    //         return () => clearInterval(timerId);
+    //     }, []);
+    //
+    //     return null;
+    // };
 
 
-        const changeBackground = () => {
-            const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-            const mobile = config.images.mobile
-            const pc = config.images.pc
+    return <VideoBackground/>;
 
 
-            const imagePath = isMobile
-                ?
-                mobile[Math.floor(Math.random() * mobile.length)]
-                :
-                pc[Math.floor(Math.random() * pc.length)]
-
-            document.body.style.backgroundImage = `url(${imagePath})`;
-        };
-
-        changeBackground(); // 初始设置
-
-        // 设置定时器，每秒执行一次
-        const timerId = setInterval(() => {
-
-            changeBackground(); // 循环更新背景图片
-        }, 3000);
-
-        // 返回清理函数
-        return () => {
-            clearInterval(timerId); // 组件卸载时清除定时器
-        };
-
-
-    }, []);
-
-    return null; // 不渲染任何 UI，只用于控制 body
 };
 
 export default BackgroundSlider;

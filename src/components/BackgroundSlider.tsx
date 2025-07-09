@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
-import config from '../config';
+import React from 'react';
+// import config from '../config';
 
 const BackgroundSlider: React.FC = () => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const mobileImages = config.images.mobile;
-    const pcImages = config.images.pc;
+    // const mobileImages = config.images.mobile;
+    // const pcImages = config.images.pc;
 
     // 视频背景组件
     const VideoBackground = () => {

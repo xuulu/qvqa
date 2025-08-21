@@ -1,7 +1,6 @@
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
-import externalGlobals from "rollup-plugin-external-globals";
 import viteImagemin from 'vite-plugin-imagemin' // 图片压缩
 
 
@@ -58,15 +57,6 @@ export default defineConfig({
         rollupOptions: {
             treeshake: true,    // 摇掉无用代码
 
-            // 外部
-            external: ['react', 'react-dom'],
-
-            plugins: [
-                externalGlobals({
-                    react: "React",
-                    "react-dom": "ReactDOM"
-                }),
-            ],
 
             output: {
                 entryFileNames: `assets/[name].[hash].js`,

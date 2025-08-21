@@ -1,4 +1,34 @@
-export default {
+// 站点配置
+export interface SiteConfig {
+    title: string;
+    menus: MenuItem[];
+    images: ImageConfig;
+    css: CssConfig;
+}
+
+// 菜单项配置
+export interface MenuItem {
+    title: string;
+    url: string;
+}
+
+// 图片配置
+export interface ImageConfig {
+    mobile: string[];
+    pc: string[];
+}
+
+// CSS配置
+export interface CssConfig {
+    text: TextStyle;
+}
+
+// 文本样式配置
+export interface TextStyle {
+    color: string;
+}
+
+const config: SiteConfig = {
     title: '简心运维',
     menus: [
         {
@@ -33,14 +63,11 @@ export default {
             '/images/pc/6.webp',
         ],
     },
-
-
     css: {
-        text:{
+        text: {
             color: '#6ce19c',
         }
     }
 };
 
-
-
+export default config;

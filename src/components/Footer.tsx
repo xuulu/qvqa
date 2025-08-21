@@ -1,8 +1,10 @@
-import config from "../config.ts";
+import React from "react";
+import config from "../config";
+import { CssConfig } from "../config";
 
-export default function Footer() {
-    const textColor = config.css.text.color;
-    const fontSize = "0.875rem"; // 基础字体大小
+const Footer: React.FC = () => {
+    const textColor = (config.css as CssConfig).text.color;
+    const fontSize = "0.875rem";
 
     return (
         <>
@@ -16,9 +18,7 @@ export default function Footer() {
             >
                 <span>&copy;{new Date().getFullYear()}</span>
                 <span>Created by 简心运维</span>
-
-                {`  `}
-
+                {"  "}
                 <a
                     href="https://beian.miit.gov.cn/"
                     target="_blank"
@@ -31,9 +31,7 @@ export default function Footer() {
                 >
                     鲁ICP备2023042170号-1
                 </a>
-
-                {`  `}
-
+                {"  "}
                 <img
                     src="https://img.alicdn.com/tfs/TB1..50QpXXXXX7XpXXXXXXXXXX-40-40.png"
                     alt=""
@@ -42,7 +40,6 @@ export default function Footer() {
                         height: "auto",
                     }}
                 />
-
                 <a
                     href="https://beian.mps.gov.cn/#/query/webSearch?code=37092102000264"
                     target="_blank"
@@ -67,4 +64,6 @@ export default function Footer() {
             `}</style>
         </>
     );
-}
+};
+
+export default Footer;

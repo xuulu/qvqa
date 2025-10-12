@@ -11,7 +11,7 @@ const MenuComponent: React.FC = () => {
     const [time, setTime] = useState<string>('');
     const {isMobile} = useDeviceDetection();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const {setBackground,resetBackground} = useGlobalBackground();
+    const {setBackground, resetBackground} = useGlobalBackground();
 
     useEffect(() => {
         let frameId: number;
@@ -33,45 +33,70 @@ const MenuComponent: React.FC = () => {
     const items: TabsProps['items'] = [
         {
             key: '1',
-            label: '背景切换(原神)',
+            label: '背景切换',
             children: (
                 <Group
                     style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8}}
                     onChange={(e) => {
                         const value = e.target.value
                         // 判断后缀为.jpg 或 .MP4
-                        if (value.endsWith('.jpg') || value.endsWith('.webp') || value.endsWith('.png')) {
+                        if (
+                            value.endsWith('.jpg') ||
+                            value.endsWith('.webp') ||
+                            value.endsWith('.png')  ||
+                            value.includes('image=true')
+                        )
+                        {
                             setBackground({
                                 type: "image",
                                 src: value,
                                 overlay: 'rgba(0,0,0,0.2)',
                             });
                         }
-                        if (value.endsWith('.mp4')) {
+                        else if (value.endsWith('.mp4') || value.includes('video=true')) {
                             setBackground({
                                 type: "video",
                                 src: value,
-                                poster: "/images/pc/1.jpg",
-                                loop: false,
+                                loop: true,
                                 muted: false,
                             });
                         }
 
-                        resetBackground()
                     }}
                     options={[
+                        {value: "https://api.qvqa.cn/api/cos?image=true&count=1&media=true", label: '随机图片'},
+                        {value: "https://api.qvqa.cn/api/cos?video=true&count=1&media=true", label: '随机视频'},
                         {value: "/videos/丝柯克/pc.mp4", label: '丝柯克(PC)'},
                         {value: "/videos/丝柯克/mob.mp4", label: '丝柯克(MOB)'},
-                        {value: " ", label: '关闭背景'},
                     ]}
                 />
             ),
         },
-        // {
-        //     key: '2',
-        //     label: 'Tab 2',
-        //     children: 'Content of Tab Pane 2',
-        // },
+        {
+            key: '2',
+            label: '背景设置',
+            children: (
+                <Group
+                    style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8}}
+                    onChange={(e) => {
+                        const value = e.target.value
+                        if (value == "muted") return setBackground({muted: true});
+                        else if (value == "!muted") return setBackground({muted: false});
+                        else if (value == "loop") return setBackground({loop: true});
+                        else if (value == "!loop") return setBackground({loop: false});
+
+                        else return resetBackground()
+                    }}
+                    options={[
+                        {value: "muted", label: '开启静音(视频)'},
+                        {value: "!muted", label: '关闭静音(视频)'},
+                        {value: "loop", label: '开启循环播放(视频)'},
+                        {value: "!loop", label: '关闭循环播放(视频)'},
+                        {value: " ", label: '清空背景'},
+                    ]}
+                />
+            ),
+        },
     ];
 
     const onChange = (key: string) => {

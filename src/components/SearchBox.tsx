@@ -5,7 +5,7 @@ import useDeviceDetection from "@/hooks/useDeviceDetection";
 
 // 解构出 Option 组件
 const {Option} = Select;
-const { Search } = Input;
+const {Search} = Input;
 
 // 定义搜索引擎配置对象类型
 type SearchEngine = {
@@ -78,7 +78,7 @@ const SEARCH_ENGINES: SearchEngine[] = [
 const SearchBox: React.FC = () => {
     // 从本地存储获取上次选择的搜索引擎，服务端渲染时设为 null
     const storedEngine = typeof window !== "undefined" ? localStorage.getItem("selectedEngine") : null;
-    
+
     // 设置默认搜索引擎：优先使用存储的引擎，否则使用第一个
     const defaultEngine = SEARCH_ENGINES.find((e) => e.name === storedEngine) || SEARCH_ENGINES[0];
 
@@ -88,7 +88,7 @@ const SearchBox: React.FC = () => {
     const [suggests, setSuggests] = useState<string[]>([]);
 
     // 获取设备信息
-    const { isMobile } = useDeviceDetection();
+    const {isMobile} = useDeviceDetection();
 
     // 副作用钩子：处理联想词获取逻辑
     useEffect(() => {
@@ -139,22 +139,25 @@ const SearchBox: React.FC = () => {
         const selected = SEARCH_ENGINES.find((e) => e.name === value);
         if (selected) {
             setEngine(selected); // 更新当前搜索引擎
-            
+
             // 将选择保存到本地存储
             localStorage.setItem("selectedEngine", selected.name);
-            
+
             setQuery(""); // 清空搜索框内容
         }
     };
 
     // 渲染 UI 组件
     return (
-        <Space>
+        <Space align="center">
             {/* 搜索引擎选择下拉框 */}
-            <Select 
-                value={engine.name} 
-                onChange={handleEngineChange} 
-                style={{width: isMobile ? "87px" : "100px"}}
+            <Select
+                value={engine.name}
+                onChange={handleEngineChange}
+                style={{
+                    width: isMobile ? "87px" : "100px",
+                    transform: 'translateY(1px)'
+            }}
             >
                 {/* 动态渲染所有可用搜索引擎选项 */}
                 {SEARCH_ENGINES.map((e) => (
@@ -166,7 +169,6 @@ const SearchBox: React.FC = () => {
 
             {/* 自动完成输入框，带联想词提示 */}
             <AutoComplete
-                style={{width: isMobile ? "250px" : "500px"}}
                 options={suggests.map((s) => ({value: s}))} // 转换联想词为选项格式
                 value={query}
                 onChange={setQuery}
@@ -176,8 +178,12 @@ const SearchBox: React.FC = () => {
             >
                 {/* 搜索输入框及按钮 */}
                 <Search
+                    style={{
+                        width: isMobile ? "250px" : "500px",
+                    }}
                     // enterButton="搜索"
                     // enterButton
+                    showCount
                     onSearch={handleSearch} // 回车或点击搜索按钮触发
                 />
             </AutoComplete>

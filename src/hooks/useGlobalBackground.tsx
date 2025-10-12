@@ -61,14 +61,19 @@ export function BackgroundProvider({
         if (typeof window !== 'undefined' && persist) {
             try {
                 const saved = localStorage.getItem('globalBackground_last');
-                if (saved) return { ...defaultState, ...JSON.parse(saved) };
-            } catch {}
+                if (saved) return {...defaultState, ...JSON.parse(saved)};
+            } catch {
+            }
         }
         return defaultState;
     });
 
     useEffect(() => {
         setMounted(true);
+        // 如果有背景源则显示
+        if (state.src) {
+            setVisible(true);
+        }
     }, []);
 
     // 控制媒体显示/隐藏动画

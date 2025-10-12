@@ -3,7 +3,7 @@ import {AntdRegistry} from '@ant-design/nextjs-registry';
 import '@ant-design/v5-patch-for-react-19';
 import "./globals.css";
 
-import ThemeProvider from "@/components/ThemeProvider"
+import ThemeProvider from "@/ThemeProvider"
 import {BackgroundProvider} from "@/hooks/useGlobalBackground"
 
 export const metadata: Metadata = {

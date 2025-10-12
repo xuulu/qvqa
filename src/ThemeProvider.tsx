@@ -2,7 +2,6 @@
 import React, {useState, useMemo, createContext, useContext} from 'react';
 import {ConfigProvider} from 'antd';
 import type {ThemeConfig} from 'antd';
-import zh_CN from 'antd/locale/zh_CN';
 
 // 自定义两个主题示例：light 和 dark（可按需扩展）
 const makeTheme = (mode: 'light' | 'dark', primary = '#1677ff'): ThemeConfig => {
@@ -24,6 +23,16 @@ const makeTheme = (mode: 'light' | 'dark', primary = '#1677ff'): ThemeConfig => 
                 // colorPrimaryBg: 'rgba(255,255,255,0.8)',
 
                 // 其他 token 可按需覆盖...
+            },
+            components: {
+                // 配置组件的样式
+                Select: {
+                    controlHeight: 40,
+                },
+                Input: {
+                    controlHeight: 40,
+                },
+
             },
         };
     }
@@ -69,7 +78,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({children
 
     return (
         <ThemeContext.Provider value={contextValue}>
-            <ConfigProvider theme={theme} locale={zh_CN}>
+            <ConfigProvider theme={theme}>
                 {children}
             </ConfigProvider>
         </ThemeContext.Provider>

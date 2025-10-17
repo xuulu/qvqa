@@ -15,7 +15,7 @@ type SearchEngine = {
     suggestApi?: (query: string) => Promise<string[]>; // 联想词 API 函数（可选）
 };
 
-const search_engine = `https://api.qvqa.cn/api/search_engine?q=你好`;
+const search_engine = `https://api.qvqa.cn/api/search_engine?q=`;
 
 // 预定义搜索引擎列表，支持扩展
 const SEARCH_ENGINES: SearchEngine[] = [

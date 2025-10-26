@@ -146,11 +146,12 @@ export function BackgroundProvider({
         top: '50%',
         left: '50%',
         minWidth: '100%',
-        minHeight: '100%',
-        width: 'auto',
+        minHeight: '100vh',
+        width: '100%',
         height: 'auto',
         transform: 'translate(-50%, -50%)',
-        objectFit: 'cover',
+        objectFit: 'cover', // 填充容器时裁剪多余的部分
+        // objectFit: 'contain',   // 填充容器时保持原始比例
         pointerEvents: 'none',
         userSelect: 'none',
     };

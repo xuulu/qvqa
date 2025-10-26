@@ -64,10 +64,12 @@ const MenuComponent: React.FC = () => {
 
                     }}
                     options={[
-                        {value: "https://api.qvqa.cn/api/cos?image=true&count=1&media=true", label: '随机图片'},
-                        {value: "https://api.qvqa.cn/api/cos?video=true&count=1&media=true", label: '随机视频'},
+                        {value: "https://api.qvqa.cn/api/cos?image=true&count=1&redirect=true", label: '随机图片'},
+                        {value: "https://api.qvqa.cn/api/cos?video=true&count=1&redirect=true", label: '随机视频'},
                         {value: "/videos/丝柯克/pc.mp4", label: '丝柯克(PC)'},
                         {value: "/videos/丝柯克/mob.mp4", label: '丝柯克(MOB)'},
+                        {value: "/images/茜特菈莉/mob.webp", label: '茜特菈莉(MOB)'},
+                        {value: "/images/茜特菈莉/mob1.jpg", label: '茜特菈莉(MOB)'},
                     ]}
                 />
             ),

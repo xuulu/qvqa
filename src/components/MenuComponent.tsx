@@ -4,74 +4,159 @@ import {Modal, Tabs, Radio} from 'antd';
 import type {TabsProps} from 'antd';
 import useDeviceDetection from "@/hooks/useDeviceDetection";
 import {useGlobalBackground} from "@/hooks/useGlobalBackground";
+import type {StaticDirectoryStructure} from "@/types/staticDirectoryStructure";
+import TimeDisplay from './TimeDisplay'; // 引入新的时间组件
+
 
 const {Group} = Radio;
 
+
 const MenuComponent: React.FC = () => {
-    const [time, setTime] = useState<string>('');
     const {isMobile} = useDeviceDetection();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {setBackground, resetBackground} = useGlobalBackground();
+    const [staticData, setStaticData] = useState<StaticDirectoryStructure>();
 
     useEffect(() => {
-        let frameId: number;
-
-        const updateTime = () => {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            setTime(`${hours}:${minutes}:${seconds}`);
-            frameId = requestAnimationFrame(updateTime);
+        // 监听键盘按键
+        const fe = async () => {
+            const resp = await fetch('static_directory_structure.json')
+            const data: StaticDirectoryStructure = await resp.json()
+            setStaticData(data)
         };
 
-        frameId = requestAnimationFrame(updateTime);
-
-        return () => cancelAnimationFrame(frameId);
+        fe().then(() => {
+            console.log('静态目录结构加载完毕')
+        });
     }, []);
+
+    if (!staticData) return [];
+
+
+    // 遍历生成图片选项
+    const imageOptions: Array<{ value: string; label: string }> = [];
+    if (staticData?.assets?.images) {
+        Object.keys(staticData.assets.images).forEach(category => {
+            const categoryItems = staticData.assets.images?.[category];
+            if (Array.isArray(categoryItems)) {
+                // 处理直接数组类型的图片分类
+                categoryItems.forEach((path: string) => {
+                    // 根据设备类型过滤资源
+                    if (isMobile && path.includes('/mobile/')) {
+                        imageOptions.push({
+                            value: path,
+                            label: `${path.split('/').pop()}`,
+                        });
+                    } else if (!isMobile && path.includes('/desktop/')) {
+                        imageOptions.push({
+                            value: path,
+                            label: ` ${path.split('/').pop()}`,
+                        });
+                    } else if (!path.includes('/mobile/') && !path.includes('/desktop/')) {
+                        // 处理不区分设备类型的资源
+                        imageOptions.push({
+                            value: path,
+                            label: `${path.split('/').pop()}`,
+                        });
+                    }
+                });
+            } else if (categoryItems) {
+                // 处理嵌套对象类型的图片分类
+                Object.keys(categoryItems).forEach(subCategory => {
+                    const subItems = categoryItems?.[subCategory];
+                    if (Array.isArray(subItems)) {
+                        subItems.forEach((path: string) => {
+                            // 根据设备类型过滤资源
+                            if (isMobile && path.includes('/mobile/')) {
+                                imageOptions.push({
+                                    value: path,
+                                    label: `${category} ${path.split('/').pop()}`,
+                                });
+                            } else if (!isMobile && path.includes('/desktop/')) {
+                                imageOptions.push({
+                                    value: path,
+                                    label: `${category} ${path.split('/').pop()}`,
+                                });
+                            } else if (!path.includes('/mobile/') && !path.includes('/desktop/')) {
+                                // 处理不区分设备类型的资源
+                                imageOptions.push({
+                                    value: path,
+                                    label: `${category}: ${path.split('/').pop()}`,
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // 遍历生成视频选项
+    const videoOptions: Array<{ value: string; label: string }> = [];
+    if (staticData?.assets?.videos) {
+        Object.keys(staticData.assets.videos).forEach(category => {
+            const categoryItems = staticData.assets.videos?.[category];
+            if (categoryItems) {
+                Object.keys(categoryItems).forEach(deviceType => {
+                    // 根据设备类型过滤资源
+                    if ((isMobile && deviceType === 'mobile') || (!isMobile && deviceType === 'desktop')) {
+                        const items = categoryItems?.[deviceType];
+                        if (Array.isArray(items)) {
+                            items.forEach((path: string) => {
+                                videoOptions.push({
+                                    value: path,
+                                    label: `${category}${path.split('/').pop()}`,
+                                });
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+
 
     const items: TabsProps['items'] = [
         {
             key: '1',
             label: '背景切换',
             children: (
-                <Group
-                    style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8}}
-                    onChange={(e) => {
-                        const value = e.target.value
-                        // 判断后缀为.jpg 或 .MP4
-                        if (
-                            value.endsWith('.jpg') ||
-                            value.endsWith('.webp') ||
-                            value.endsWith('.png')  ||
-                            value.includes('image=true')
-                        )
-                        {
-                            setBackground({
-                                type: "image",
-                                src: value,
-                                overlay: 'rgba(0,0,0,0.2)',
-                            });
-                        }
-                        else if (value.endsWith('.mp4') || value.includes('video=true')) {
-                            setBackground({
-                                type: "video",
-                                src: value,
-                                loop: true,
-                                muted: false,
-                            });
-                        }
+                <>
+                    <Group
+                        style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8}}
+                        onChange={(e) => {
+                            const value = e.target.value
+                            // 判断后缀为.jpg 或 .MP4
+                            if (
+                                value.endsWith('.jpg') ||
+                                value.endsWith('.webp') ||
+                                value.endsWith('.png') ||
+                                value.includes('image=true')
+                            ) {
+                                setBackground({
+                                    type: "image",
+                                    src: value,
+                                    overlay: 'rgba(0,0,0,0.2)',
+                                });
+                            } else if (value.endsWith('.mp4') || value.includes('video=true')) {
+                                setBackground({
+                                    type: "video",
+                                    src: value,
+                                    loop: true,
+                                    muted: false,
+                                });
+                            }
 
-                    }}
-                    options={[
-                        {value: "https://api.qvqa.cn/api/cos?image=true&count=1&redirect=true", label: '随机图片'},
-                        {value: "https://api.qvqa.cn/api/cos?video=true&count=1&redirect=true", label: '随机视频'},
-                        {value: "/videos/丝柯克/pc.mp4", label: '丝柯克(PC)'},
-                        {value: "/videos/丝柯克/mob.mp4", label: '丝柯克(MOB)'},
-                        {value: "/images/茜特菈莉/mob.webp", label: '茜特菈莉(MOB)'},
-                        {value: "/images/茜特菈莉/mob1.jpg", label: '茜特菈莉(MOB)'},
-                    ]}
-                />
+                        }}
+                        options={[
+                            ...imageOptions,
+                            ...videoOptions
+                        ]}
+                    />
+                    <br/>
+                    <hr/>
+                    <p>Tips: 不同设备显示的资源会有所不同哟</p>
+                </>
             ),
         },
         {
@@ -101,34 +186,19 @@ const MenuComponent: React.FC = () => {
         },
     ];
 
-    const onChange = (key: string) => {
-        console.log(key);
-    };
+    console.log('测试')
 
     return (
         <>
+            <TimeDisplay onClick={() => setIsModalOpen(true)}/>
 
-            <div
-                onClick={() => setIsModalOpen(true)}
-                style={{
-                    fontSize: isMobile ? '60px' : '100px',
-                    fontWeight: 'bold',
-                    color: 'transparent', // 透明文字
-                    WebkitTextStroke: '1px #8fd3f4', // 添加描边效果
-                    WebkitFontSmoothing: 'ge',
-                    textAlign: 'center',
-                }}>
-                {time}
-            </div>
             <Modal
-                // title="简心运维"
-                // closable={{'aria-label': 'Custom Close Button'}}
                 open={isModalOpen}
                 onOk={() => setIsModalOpen(false)}
                 onCancel={() => setIsModalOpen(false)}
                 footer={null}
             >
-                <Tabs defaultActiveKey="1" items={items} onChange={onChange}/>
+                <Tabs defaultActiveKey="1" items={items}/>
             </Modal>
         </>
     );

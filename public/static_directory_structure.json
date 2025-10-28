@@ -1,0 +1,46 @@
+{
+  "assets": {
+    "images": {
+      "desktop": [
+        "/static/images/desktop/1.webp",
+        "/static/images/desktop/2.webp",
+        "/static/images/desktop/3.webp",
+        "/static/images/desktop/4.webp",
+        "/static/images/desktop/5.webp",
+        "/static/images/desktop/6.webp"
+      ],
+      "mobile": [
+        "/static/images/mobile/1.webp",
+        "/static/images/mobile/2.webp",
+        "/static/images/mobile/3.webp",
+        "/static/images/mobile/4.webp",
+        "/static/images/mobile/5.webp",
+        "/static/images/mobile/6.webp"
+      ],
+      "茜特菈莉": {
+        "mobile": [
+          "/static/images/茜特菈莉/mobile/1.webp",
+          "/static/images/茜特菈莉/mobile/2.webp"
+        ]
+      }
+    },
+
+
+    "videos": {
+      "丝柯克": {
+        "desktop": [
+          "/static/videos/丝柯克/desktop/1.mp4",
+          "/static/videos/丝柯克/desktop/2.mp4"
+        ],
+        "mobile": [
+          "/static/videos/丝柯克/mobile/1.mp4"
+        ]
+      },
+      "茜特菈莉": {
+        "mobile": [
+          "/static/videos/茜特菈莉/mobile/1.mp4"
+        ]
+      }
+    }
+  }
+}
